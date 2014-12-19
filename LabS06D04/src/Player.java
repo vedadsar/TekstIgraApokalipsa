@@ -39,7 +39,7 @@ public class Player extends Character{
  * @return
  */
 	public boolean escChance(Character zombie){
-		if((intell*getSpeed())/zombie.getSpeed() >=1 )
+		if((intell*getSpeed())/zombie.getSpeed() >=1.5 )
 			return true;
 		return false;
 		

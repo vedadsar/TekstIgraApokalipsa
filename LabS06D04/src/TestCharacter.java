@@ -31,25 +31,26 @@ public class TestCharacter {
 		return prvi;
 	}
 
-	public static boolean zombiJeMrtav(Player p, Zombi z){
-		
-		while(p.getHp()>0 && z.getHp()>0){
-			if(p.attack()>z.attack())
-				z.setHp(z.getHp()-30);
-			else{
-				p.setHp(p.getHp()-30);
+	public static boolean zombiJeMrtav(Player p, Zombi z) {
+
+		while (p.getHp() > 0 && z.getHp() > 0) {
+			if (p.attack() > z.attack())
+				z.setHp(z.getHp() - 1);
+			else {
+				p.setHp(p.getHp() - 1);
 			}
-		} 
-		
-		if(p.getHp()<=0)
+		}
+
+		if (p.getHp() <= 0)
 			return false;
-		else return true;
-		
+		else
+			return true;
+
 	}
-	
+
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		
+
 		Weapon noWpn = new Weapon(0, 0, 0);
 
 		Player igrac = new Player("Vedad", 100, 0.4, noWpn, 4, 16, 1.7);
@@ -57,31 +58,46 @@ public class TestCharacter {
 
 		System.out
 				.println("Poslani ste u Cernobil da istrazite neobicne pojave koje su prijavljene:");
-		System.out.println("Iznenada ispred vas iskace zombi");
-		System.out
-				.println("Sta raditi, pobjeci (pritisni 1) ili ostati (pritisni 0)");
-		int decision = in.nextInt();
-		
-		if (decision == 1) {
-			boolean jePobjegao = bjezanje(igrac, prvi);
-			if (jePobjegao == true)
-				System.out.println("Pobjegli ste!!");
-			else {
-				System.out.println("Morate se boriti");
-				decision = 0;
-			}
-			
-		}
-		if(decision != 1){
-			boolean borba = zombiJeMrtav(igrac, prvi);
-			if(borba == true)
-				System.out.println("Cestitamo ubili ste zombija, idemo dalje !!!");
-			else
-				System.out.println("Ubio vas je zombi");
-			 	return;
-		}
-		
 
+		int deadZombieCounter = 0;
+
+		while (deadZombieCounter < 5) {
+
+			System.out.println("Iznenada ispred vas iskace zombi "
+					+ prvi.getName());
+			System.out
+					.println("Sta raditi, pobjeci (pritisni 1) ili ostati (pritisni 0)");
+			int decision = in.nextInt();
+
+			if (decision == 1) {
+				boolean jePobjegao = bjezanje(igrac, prvi);
+				if (jePobjegao == true)
+					System.out.println("Pobjegli ste!!");
+				else {
+					System.out.println("Morate se boriti");
+					decision = 0;
+				}
+
+			}
+			if (decision != 1) {
+				boolean borba = zombiJeMrtav(igrac, prvi);
+				if (borba == true) {
+					System.out
+							.println("Cestitamo ubili ste zombija, idemo dalje !!!");
+					System.out.println(igrac.getHp());
+				
+					prvi = kreirajZombija();
+					deadZombieCounter++;
+				} else{
+					System.out.println("Ubio vas je zombi");
+				return;
+				}
+			}
+
+		}
+		
+		if(deadZombieCounter == 5)
+			System.out.println("Cestitamo, uspjeli ste ubiti 5 zombija. Prekucali ste igricu");
 	}
 
 }
